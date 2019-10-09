@@ -1,0 +1,30 @@
+﻿///Busca os comandos no prompt
+Get-Help EntityFramework;
+
+///Cria um script de migração automática
+Add-Migration <NOME_MIGRATION>
+
+///Remove um script de migração automatica
+Remove-Migration
+
+///Entity pega a nova versão que foi registrada e executa diretamente no banco de dados 
+//Deve ser chamada depois de Add-Migration 
+// -Verbose mostra acontecimentos
+Update-Database
+
+///Cria um script para ser criada o atualiza versao.
+Script-Migration
+
+Drop-Database
+
+Scaffold-DbContext
+
+
+
+para garantir que todas as migrações estarão aplicadas no banco de dados, podemos escrever:
+
+using(var contexto = new BikeContext())
+{
+  contexto.Database.Migrate();
+}
+Você precisa garantir que esse código seja executado antes de qualquer acesso aos objetos gerenciados pelo contexto. Isso vai depender do tipo de aplicação que será implementada.

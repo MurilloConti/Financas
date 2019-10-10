@@ -14,6 +14,21 @@ insert into Carteiras(Nome,ProprietarioId)
 values('Carteira do murillo',1);
 update fundos set CarteiraId = 1 where Id >= 1
 
+DROP PROCEDURE IF EXISTS sp_Carteira_Inserts;
+DELIMITER |
+CREATE PROCEDURE sp_Carteira_Inserts (IN valoAtual decimal,IN idFundo INT,dtFinal datetime)
+BEGIN
+
+    DECLARE valor decimal;
+    DECLARE dtInicial datetime;    
+    DECLARE plucro decimal;
+    SELECT SaldoFinal, DATE_ADD(DataInicio, INTERVAL 1 MONTH)  INTO valor,dtInicial from rendimentos WHERE FundoId = idFundo ORDER BY DataFim DESC LIMIT 1;         
+    insert INTO rendimentos(DataInicio,DataFim,FundoId,LuroApurado,PercLucro,SaldoAnterior,SaldoFinal) SELECT dtInicial,dtFinal,idFundo,(valoAtual - valor),TRUNCATE(valoAtual/((valoAtual - valor)*100),2),valor,valoAtual;
+      
+            
+END
+|
+DELIMITER;
 
 
 select * from Rendimentos;

@@ -10,9 +10,10 @@ using System;
 namespace Financas_api.Migrations
 {
     [DbContext(typeof(FinancaContext))]
-    partial class FinancaContextModelSnapshot : ModelSnapshot
+    [Migration("20191010155352_AlteracaoFundo")]
+    partial class AlteracaoFundo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

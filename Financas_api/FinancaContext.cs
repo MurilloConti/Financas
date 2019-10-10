@@ -11,7 +11,7 @@ namespace Financas_api
         public DbSet<Rendimento> Rendimentos { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("server=localhost;database=financas;user=root;password=123456;SslMode=none");
+             optionsBuilder.UseMySQL("server=localhost;database=financas;user=root;password=123456;SslMode=none");
             //optionsBuilder.UseMySQL("server=localhost;database=financas;user=root;password=1234;SslMode=none");            
         }
 

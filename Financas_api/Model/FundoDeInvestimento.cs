@@ -17,6 +17,7 @@ namespace Financas_api.Model
         public decimal QtdCotas { get; set; }
         public decimal ValorCota { get; set; }
         public decimal ValorTotal { get; set; }
+        public decimal ProcCDI { get; set; }
         public int ANBIMA { get; set; }
         public string ISIN { get; set; }
     }

@@ -9,6 +9,7 @@ namespace Financas_api
         public DbSet<Carteira> Carteiras { get; set; }
         public DbSet<FundoDeInvestimento> Fundos { get; set; }
         public DbSet<Rendimento> Rendimentos { get; set; }
+        public DbSet<Indice> Indices { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
              optionsBuilder.UseMySQL("server=localhost;database=financas;user=root;password=123456;SslMode=none");

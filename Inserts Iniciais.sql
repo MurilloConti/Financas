@@ -12,7 +12,7 @@ values('Murillo Conti Rodrigues de Castro',31699217890,'19931030','murilloconti@
 insert into Carteiras(Nome,ProprietarioId)
 values('Carteira do murillo',1);
 update fundos set CarteiraId = 1 where Id >= 1
-
+insert into Indices(nome,valor,DtAlteracao)VALUES('CDI',5.40,NOW())
 -- LCI/BB
 insert into Rendimentos(DataInicio,DataFim,FundoId,LuroApurado,PercLucro,SaldoAnterior,SaldoFinal)
 values('20190101','20190131',4,0,0,0,119899.50);

@@ -1,4 +1,5 @@
 ﻿using Financas_api.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +55,41 @@ namespace Financas_api.DAO
                 }
                 else
                     return contexto.Fundos.ToList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public IList<FundoDeInvestimento> CarregaFull(int pId = 0, int pPrimeiraLinha = 0, int pNroLinhas = 10)
+        {
+            try
+            {
+                if (pId != 0)
+                {
+                    return new List<FundoDeInvestimento>
+                    {
+                        contexto.Fundos
+                        .Include("Fundos.Benchmark")                       
+                        .FirstOrDefault(x => x.Id == pId)
+                    };
+                }
+                if (pNroLinhas != 0)
+                {
+                    return contexto.Fundos
+                        .Include("Fundos.Benchmark")                        
+                        .OrderBy(p => p.Id)
+                        .Skip(pPrimeiraLinha)
+                        .Take(pNroLinhas).ToList();
+                }
+                else
+                {
+                    return contexto.Fundos
+                        .Include("Fundos.Benchmark")                        
+                        .ToList();
+                }
             }
             catch (Exception)
             {

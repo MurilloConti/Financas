@@ -10,9 +10,10 @@ using System;
 namespace Financas_api.Migrations
 {
     [DbContext(typeof(FinancaContext))]
-    partial class FinancaContextModelSnapshot : ModelSnapshot
+    [Migration("20191014232537_Indices")]
+    partial class Indices
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,8 +52,6 @@ namespace Financas_api.Migrations
 
                     b.Property<string>("Nome");
 
-                    b.Property<decimal>("PercIndice");
-
                     b.Property<decimal>("QtdCotas");
 
                     b.Property<decimal>("TxAdministracao");
@@ -80,8 +79,6 @@ namespace Financas_api.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DtAlteracao");
 
                     b.Property<string>("Nome");
 

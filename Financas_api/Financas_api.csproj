@@ -3,6 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20191014231350_Indices.cs" />
+    <Compile Remove="Migrations\20191014231350_Indices.Designer.cs" />
+  </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>

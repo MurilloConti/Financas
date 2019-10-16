@@ -19,6 +19,6 @@ namespace Financas_api.DAO
         public void Dispose()
         {
             contexto.Dispose();
-        }
+        }       
     }
 }

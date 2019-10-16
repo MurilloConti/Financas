@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt_BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Exo" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <title>NetPag - Cartão</title>
+    <link rel="stylesheet" href="netPag.css">
+</head>
+
+<body class="corpo">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm " style="max-height: 15vh">
+
+        <a class="navbar-brand" href="#">
+            <img src="avatar.jpg" alt="" class="img-fluid" style="max-width: 64px;max-height: 64px">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item px-2">
+                    <span class="navbar-text" style="color: #777777">A</span>
+                </li>
+                <li class="nav-item" style="border-left: 1px solid #dadada;border-right: 1px solid #dadada;">
+                    <a class="nav-link px-3" href="#">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </li>
+            </ul>
+            <span class="navbar-text">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <a class="btn btn-outline-secondary my-2 my-sm-0" style="cursor: pointer;">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        Titulos
+                    </a>
+                    <a class="btn btn-outline-info my-2 my-sm-0 active" style="cursor: pointer;">
+                        <i class="fas fa-credit-card"></i>
+                        Cartão de crédito
+                    </a>
+                    <a class="btn btn-outline-secondary my-2 my-sm-0" style="cursor: pointer;">
+                        <i class="fas fa-retweet"></i>
+                        Movimentações
+                    </a>
+                </div>
+            </span>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="col">
+            <div class="row form-inline m-3 w-100" style="max-height: 10vh;">
+                <div class="form-group row mx-3">
+                    <P style="color: #777777; font-weight: bold;" class="col-form-label px-1">DETALHES DA COBRANCA</P>
+                </div>
+                <div class="form-group row mx-3">
+                    <label for="staticEmail" class="col-form-label px-1">OCORRENCIA</label>
+                    <select name="" id="" class="form-control">
+                        <option class="dropdown-item" value="">Hoje</option>
+                        <option class="dropdown-item" value="">30 dias</option>
+                        <option class="dropdown-item" value="">60 dias</option>
+                        <option class="dropdown-item" value="">90 dias</option>
+                    </select>
+                </div>
+                <div class="form-group row mx-3">
+                    <label for="staticEmail" class="col-form-label px-1">NUMERO</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="form-group row mx-3">
+                    <label for="" class="col-form-label px-1">TIPO</label>
+                    <select name="" id="" class="form-control">
+                        <option class="dropdown-item" value="">Selecione</option>
+                        <option class="dropdown-item" value="">Liquidação</option>
+                        <option class="dropdown-item" value="">Baixa</option>
+                    </select>
+                </div>
+                <div class="form-group row mx-3">
+                    <label for="staticEmail" class="col-form-label px-1">LIBERAÇÃO PREVISTA</label>
+                    <select name="" id="" class="form-control">
+                        <option class="dropdown-item" value="">Hoje</option>
+                        <option class="dropdown-item" value="">30 dias</option>
+                        <option class="dropdown-item" value="">60 dias</option>
+                        <option class="dropdown-item" value="">90 dias</option>
+                    </select>
+                </div>
+                <div class="form-group row mx-3">
+                    <label for="staticEmail" class="col-form-label px-1">STATUS</label>
+                    <select name="" id="" class="form-control">
+                        <option class="dropdown-item" value="">Previsto</option>
+                        <option class="dropdown-item" value="">Disponivel</option>
+                        <option class="dropdown-item" value="">Cancelado</option>
+                    </select>
+                </div>
+                <div class="form-group row mx-3 ">
+                    <a href="" class="btn btn-info" style="width: 100px">
+                        <i class="fas fa-search"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="row form-inline justify-content-end">
+                <div class="form-group row pb-1 mx-3">
+                    <label>Total de registros: &nbsp;
+                        <strong>10</strong>
+                    </label>
+                </div>
+                <div class="form-group row mx-3 pb-1">
+                    <label class="pr-2">Linhas</label>
+                    <select name="" id="" class="form-control">
+                        <option value="10">10</option>
+                        <option value="50">50</option>
+                        <option value="50">100</option>
+                        <option value="50">1000</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="max-height: 60vh; overflow-y: scroll;">
+            <div class="col">
+                <table class="table">
+                    <thead class="thead-light text-center">
+                        <tr>
+                            <th scope="col">OCORRENCIA</th>
+                            <th scope="col">CLIENTE</th>
+                            <th scope="col">IDENTIFICADOR</th>
+                            <th scope="col">TIPO</th>
+                            <th scope="col">LIBERAÇÃO PREVISTA</th>
+                            <th scope="col">LIBERAÇÃO</th>
+                            <th scope="col">HISTORICO</th>
+                            <th scope="col">VALOR</th>
+                            <th scope="col">STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <tr>
+                            <td>10/02/2019 13:54:55</td>
+                            <td>MARCOS VINICIUS S SANTOS</td>
+                            <td>110418119088MHP8F17B</td>
+                            <td style="color: #17A2B8;font-weight: bold">E</td>
+                            <td>12/05/2019</td>
+                            <td>13/05/2019</td>
+                            <td>LIQUIDACAO_PAG_ONLINE_CIELO</td>
+                            <td style="color: #1dac24;font-weight: bold">+R$119,90</td>
+                            <td>Previsto</td>
+                        </tr>
+                        <tr>
+                                <td>10/02/2019 13:54:55</td>
+                                <td>MARCOS VINICIUS S SANTOS</td>
+                                <td>110418119088MHP8F17B</td>
+                                <td style="color: #c00d0d;font-weight: bold">S</td>
+                                <td>12/05/2019</td>
+                                <td>13/05/2019</td>
+                                <td>LIQUIDACAO_PAG_ONLINE_CIELO</td>
+                                <td style="color: #c00d0d;font-weight: bold">-R$7,90</td>
+                                <td>Previsto</td>
+                            </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">1</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">...</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">2</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="row fixed-bottom ">
+            <div class="col shadow form-inline d-flex justify-content-end mt-5 pr-5" style="background: #ffffff;height: 8vh;">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Financas_api.Model
 {
-    public class Rendimento
+    public class Rendimentos
     {
         public int Id { get; set; }
         public DateTime DataInicio { get; set; }

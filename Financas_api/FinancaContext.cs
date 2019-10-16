@@ -8,7 +8,7 @@ namespace Financas_api
         public DbSet<Pessoa> Pessoas { get; set; }
         public DbSet<Carteira> Carteiras { get; set; }
         public DbSet<FundoDeInvestimento> Fundos { get; set; }
-        public DbSet<Rendimento> Rendimentos { get; set; }
+        public DbSet<Rendimentos> Rendimentos { get; set; }
         public DbSet<Indice> Indices { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

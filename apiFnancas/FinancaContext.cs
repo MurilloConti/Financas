@@ -14,7 +14,7 @@ namespace Financas_api
         public DbQuery<EvolucaoRendiemnto> EvolucaoRendiemntos { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-             optionsBuilder.UseMySQL("server=localhost;database=financas;user=root;password=123456;SslMode=none");
+             optionsBuilder.UseMySQL("server=localhost;database=financas;user=root;password=123456;SslMode=none;Allow User Variables=True");
             //optionsBuilder.UseMySQL("server=localhost;database=financas;user=root;password=1234;SslMode=none");            
         }
 

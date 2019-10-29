@@ -12,5 +12,6 @@ namespace Financas_api.Model
         public decimal SaldoFinal { get; set; }
         public decimal LuroApurado { get; set; }
         public decimal PercLucro { get; set; }
+        public Carteira carteira { get; set; }
     }
 }

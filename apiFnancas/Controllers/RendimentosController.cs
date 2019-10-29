@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
 
 namespace apiFnancas.Controllers
 {
@@ -21,6 +22,27 @@ namespace apiFnancas.Controllers
         public string GetEvolucao()
         {
             return JsonConvert.SerializeObject(new RendimentosDAO().GetEvolucaoPatrimonio());
+        }
+
+        [HttpGet]
+        [Route("total")]
+        public string GetrendimentoCarteira()
+        {
+            return JsonConvert.SerializeObject(new RendimentosDAO().GetRendimentoCarteira());
+        }
+
+        [HttpGet]
+        [Route("evolucao/percentual")]
+        public string GetEvolucaoPercentual()
+        {            
+            return JsonConvert.SerializeObject(new RendimentosDAO().GetEvolucaoPatrimonio());
+        }
+        [HttpPut]
+        [Route("insere/{idFundo}/{valorFinal}/{dtFim}")]
+        public void InsereRendimento(int idFundo, string dtFim,decimal valorFinal)
+        {
+            var data = Convert.ToDateTime(dtFim);
+            new RendimentosDAO().InsereRendimentoProc(data, idFundo, valorFinal);
         }
     }
 }

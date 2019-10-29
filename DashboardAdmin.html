@@ -61,7 +61,7 @@
                             Lucro no mês {{ new Date().getMonth() + 1 }}/{{ new Date().getFullYear() }}
                         </div>
                         <div class="card-body">
-                            <p style="font-size: 22px" class="card-text">{{TotalLiquidacao}}</p>
+                            <p style="font-size: 22px" class="card-text"></p>
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                             Ganho em relação ultimo periodo {{ new Date().getMonth()  }}/{{ new Date().getFullYear() }}
                         </div>
                         <div class="card-body">
-                            <p style="font-size: 22px" class="card-text">{{TotalBaixas}}</p>
+                            <p style="font-size: 22px" class="card-text">{{this.total}}</p>
                         </div>
                     </div>
                 </div>
@@ -184,50 +184,32 @@
     //Load the Visualization API and the corechart package.
     google.charts.load('current', { 'packages': ['corechart'] });
 
-    google.charts.setOnLoadCallback(drawChart);
+    // google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart() {
-
-        // Create the data table.
-        var data = new google.visualization.DataTable();
+    function drawChart(arr) {            
+            var data2 = new google.visualization.DataTable();
+            data2.addColumn('string', 'Fundo');
+            data2.addColumn('number', 'Valor');
+            data2.addRows([
+                ['Daycoval Debêntures Incentiva FIM C Priv', 83719.88],
+                ['LCI/DAYCOVAL 97.5%', 38191.19],
+                ['LCI/DAYCOVAL 100%', 9291.02],
+                ['Constância Fundamento FIA', 10181.65],
+                ['Daycoval Ibovespa Ativo FIA', 16417.96],
+                ['LCI Banco do Brasil', 0],
+                [' BP Debêntures Incentiv 45 FIC FIM C Priv', 0],
+            ]);
+            var options2 = { 'height': 300 };
+            var data = new google.visualization.DataTable();
             data.addColumn('string', 'Ano/Mes');
             data.addColumn('number', 'Valor');
-            data.addRows([
-                ['01/2019', 151108.86],
-                ['02/2019', 149710.88],
-                ['02/2019', 150339.44],
-                ['04/2019', 151018.09],
-                ['05/2019', 151880.67],
-                ['06/2019', 152855.15],
-                ['07/2019', 155995.25],
-                ['08/2019', 156274.08],
-                ['09/2019', 157801.70],
-            ]);
-
-            var data2 = new google.visualization.DataTable();
-                data2.addColumn('string', 'Fundo');
-                data2.addColumn('number', 'Valor');
-                data2.addRows([
-                    ['Daycoval Debêntures Incentiva FIM C Priv', 83719.88],
-                    ['LCI/DAYCOVAL 97.5%', 38191.19],
-                    ['LCI/DAYCOVAL 100%', 9291.02],
-                    ['Constância Fundamento FIA', 10181.65],
-                    ['Daycoval Ibovespa Ativo FIA', 16417.96],
-                    ['LCI Banco do Brasil', 0],
-                    [' BP Debêntures Incentiv 45 FIC FIM C Priv', 0],                    
-                ]);
-
-        // Set chart options
-        var options = { 'height': 300, colors: ['#00C853'], };
-        var options2 = { 'height': 300 };
-
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-
-        var chart2 = new google.visualization.PieChart(document.getElementById('chart_div2'));
-        chart2.draw(data2, options2);
-    }
+            data.addRows(arr);
+            var options = { 'height': 300, colors: ['#00C853'], };
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+            var chart2 = new google.visualization.PieChart(document.getElementById('chart_div2'));
+            chart2.draw(data2, options2);
+        }
 </script>
 <script>
     new Vue({
@@ -235,53 +217,42 @@
         data() {
             return {
                 info: {},
-                EvolBaixas:{},
+                total: 1,
+                EvolBaixas:{}
             }
         },
-        mounted: function () {
+        created: function () {
             axios
-                .get('https://localhost:5001/api/Relatorios/RelComleto')
-                .then(function (response) {
-                    this.info = response.data;                    
+                .get('https://localhost:5001/rendimentos/evolucao')
+                .then(function (response) {                                     
+                    this.drawChart(response.data);
                 }.bind(this))
-                .catch(error => console.log(error));
+                .catch(error => console.log(error));      
                 axios
-                .get('https://localhost:5001/api/Relatorios/RelEvolBaixas')
-                .then(function (response) {
-                    this.EvolBaixas = response.data;
-                    console.log(this.EvolBaixas);
+                .get('https://localhost:5001/rendimentos/total')
+                .then(function (response) {                                     
+                    console.log(response);
+                    this.total = response.data;
                 }.bind(this))
-                .catch(error => console.log(error))                
-        },
+                .catch(error => console.log(error));              
+        },        
         computed: {
-            TotalLucro: function () {
-                let sum = 0;
-                for (let i = 0; i < this.info.length; i++) {
-                    sum += this.info[i].TotRecebidoNetPag;
-                }
-                return sum;
-            },
-            TotalLiquidacao: function () {
-                let sum = 0;
-                for (let i = 0; i < this.info.length; i++) {
-                    if (this.info[i].DescrTpOcorrencia == 'TAXA_LIQUIDACAO') {
-                        sum += this.info[i].Ocorrencias
-                    }
-                }
-                return sum;
-            },
-            TotalBaixas: function () {
-                let sum = 0;
-                for (let i = 0; i < this.info.length; i++) {
-                    if (this.info[i].DescrTpOcorrencia == 'TAXA_BAIXA_INST' || this.info[i].DescrTpOcorrencia == 'TAXA_BAIXA_AUTOMATICA') {
-                        sum += this.info[i].Ocorrencias
-                    }
-                }
-                return sum;
-            }
+              
         },
         methods: {
-
+            TotalLucro: () => {
+                console.log(this.total);
+                return this.total;
+            },         
+            drawChart: (resp) => {                
+               
+                var arr = [];
+                resp.forEach(element => {          
+                    var item = [element.DiaMes, element.Total]                              
+                    arr.push(item);
+                });                
+                drawChart(arr);
+            }
         },
         mixins: [Vue2Filters.mixin],
     })

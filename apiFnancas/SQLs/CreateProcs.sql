@@ -5,7 +5,7 @@ DELIMITER |
       DECLARE valor decimal(20,5);
       DECLARE dtInicial datetime;    
       DECLARE plucro decimal(20,5);
-      SELECT SaldoFinal, DATE_ADD(DataInicio, INTERVAL 1 MONTH)  INTO valor,dtInicial from rendimentos WHERE FundoId = idFundo ORDER BY DataFim DESC LIMIT 1;         
+      SELECT SaldoFinal, DataFim  INTO valor,dtInicial from rendimentos WHERE FundoId = idFundo ORDER BY DataFim DESC LIMIT 1;         
       insert INTO rendimentos(DataInicio,DataFim,FundoId,LuroApurado,PercLucro,SaldoAnterior,SaldoFinal) SELECT dtInicial,dtFinal,idFundo,(valoAtual - valor), fn_calculaRendimento(valoAtual,(valoAtual - valor)),valor,valoAtual;                  
   END|
 DELIMITER;
@@ -22,4 +22,14 @@ DELIMITER $$
     END$$
 DELIMITER;
 
-
+DROP PROCEDURE IF EXISTS sp_GetRendimentoCarteira;
+DELIMITER |
+  CREATE PROCEDURE sp_GetRendimentoCarteira ()     
+  BEGIN
+      DECLARE valorInicio decimal(20,5);   
+      DECLARE valorFinal decimal(20,5);
+      select  sum(SaldoFinal) INTO valorFinal  FROM rendimentos GROUP BY(DataFim) ORDER by DataFim DESC limit 1;
+      select  sum(SaldoFinal) INTO valorInicio  FROM rendimentos GROUP BY(DataFim) ORDER by DataFim ASC limit 1;
+      select (valorFinal - valorInicio) as total;
+  END|
+DELIMITER;

@@ -22,30 +22,55 @@ export default {
 
   data () {
     return {
+      series: [{
+        name: 'Net Profit',
+        data: [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000]
+      }],
       options: {
         chart: {
-          id: name
+          height: 350,
+          type: 'bar'
+        },
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            columnWidth: '55%',
+            endingShape: 'rounded'
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          show: true,
+          width: 2,
+          colors: ['transparent']
         },
         xaxis: {
-          categories: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+          categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
         },
-        theme: {
-          palette: 'palette1',
-          monochrome: {
-            enabled: true,
-            color: '#424242',
-            shadeTo: 'dark',
-            shadeIntensity: 1
+        yaxis: {
+          title: {
+            text: 'R$ (milhares)'
+          }
+        },
+        fill: {
+          opacity: 1
+        },
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return 'R$ ' + val + ' milhares'
+            }
           }
         }
-      },
-      series: [{
-        name: 'series-1',
-        data: [121532.52, 121532.52, 121532.52, 121532.52, 121532.52, 121532.52, 121532.52, 121532.52, 121532.52, 121532.52, 121532.52, 121532.52]
-      }]
+      }
     }
   }
 }
 </script>
 <style scoped>
+ .apexcharts-tooltip{
+   color: #424242;
+ }
 </style>

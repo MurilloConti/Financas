@@ -2,75 +2,49 @@
   <div class="card cardCorpo">
     <div class="card-header cardHeader">{{Title}}</div>
     <div class="card-body">
-      <apexchart width="100%" :type="tipo" :options="options" :series="series"></apexchart>
+      <GChart type="ColumnChart" :data="chartData" :options="chartOptions" />
     </div>
   </div>
 </template>
 
 <script>
-import apexchart from 'vue-apexcharts'
+import { GChart } from 'vue-google-charts'
+
 export default {
-  name: 'BarGrafico',
+  name: 'ColumnChart',
   props: {
-    Title: String,
-    tipo: String,
-    name: String
+    Title: String
   },
   components: {
-    apexchart
+    GChart
   },
-
   data () {
     return {
-      series: [{
-        name: 'Net Profit',
-        data: [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000]
-      }],
-      options: {
-        chart: {
-          height: 350,
-          type: 'bar'
-        },
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            columnWidth: '55%',
-            endingShape: 'rounded'
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          show: true,
-          width: 2,
-          colors: ['transparent']
-        },
-        xaxis: {
-          categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
-        },
-        yaxis: {
-          title: {
-            text: 'R$ (milhares)'
-          }
-        },
-        fill: {
-          opacity: 1
-        },
-        tooltip: {
-          y: {
-            formatter: function (val) {
-              return 'R$ ' + val + ' milhares'
-            }
-          }
-        }
+      // Array will be automatically processed with visualization.arrayToDataTable function
+      chartData: [
+        ['Mes', 'Valor'],
+        ['Jan', 83719.88],
+        ['Fev', 83719.88],
+        ['Mar', 83719.88],
+        ['Abr', 83719.88],
+        ['Mai', 83719.88],
+        ['Jun', 83719.88],
+        ['Jul', 83719.88],
+        ['Ago', 83719.88],
+        ['Set', 83719.88],
+        ['Out', 83719.88],
+        ['Nov', 83719.88],
+        ['Dez', 83719.88]
+      ],
+      chartOptions: {
+        colors: ['#F9A825']
       }
     }
   }
 }
 </script>
 <style scoped>
- .apexcharts-tooltip{
-   color: #424242;
- }
+.apexcharts-tooltip {
+  color: #424242;
+}
 </style>

@@ -5,7 +5,7 @@
         <div class="card text-center cardCorpo">
           <div class="card-header cardHeader">Patrimonio total</div>
           <div class="card-body">
-            <p style="font-size: 22px" class="card-text">0</p>
+            <p style="font-size: 22px" class="card-text">159.041,23</p>
           </div>
         </div>
       </div>
@@ -15,7 +15,7 @@
             class="card-header cardHeader"
           >Lucro no mês {{ new Date().getMonth() + 1 }}/{{ new Date().getFullYear() }}</div>
           <div class="card-body">
-            <p style="font-size: 22px" class="card-text"></p>
+            <p style="font-size: 22px" class="card-text">1320,35</p>
           </div>
         </div>
       </div>
@@ -30,12 +30,12 @@
         </div>
       </div>
     </div>
-    <div class="row mt-3">
-      <div class="col-6">
-          <bargrafico title="Evoluçao de patrimonio" tipo="bar"></bargrafico>
+    <div class="row mt-3 ">
+      <div class="col-6 ">
+          <bargrafico title="Evoluçao de patrimonio"></bargrafico>
       </div>
       <div class="col">
-
+        <pierafico title="Distribuição de recursos"></pierafico>
       </div>
     </div>
     <div class="row mt-3">
@@ -79,10 +79,12 @@
 <script>
 // @ is an alias to /src
 import bargrafico from '@/components/BarGrafico.vue'
+import pierafico from '@/components/PieChart.vue'
 export default {
   name: 'dashboard',
   components: {
-    bargrafico
+    bargrafico,
+    pierafico
   }
 }
 </script>
@@ -98,6 +100,6 @@ export default {
 }
 .cardCorpo {
   /* background: #424242; */
-  color: #ffffff;
+  color: #424242;
 }
 </style>

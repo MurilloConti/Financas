@@ -5,7 +5,7 @@
         <div class="card text-center cardCorpo">
           <div class="card-header cardHeader">Patrimonio total</div>
           <div class="card-body">
-            <p style="font-size: 22px" class="card-text">159.041,23</p>
+            <p style="font-size: 22px" class="card-text">{{Patrimonio}}</p>
           </div>
         </div>
       </div>
@@ -15,7 +15,7 @@
             class="card-header cardHeader"
           >Lucro no mês {{ new Date().getMonth() + 1 }}/{{ new Date().getFullYear() }}</div>
           <div class="card-body">
-            <p style="font-size: 22px" class="card-text">1320,35</p>
+            <p style="font-size: 22px" class="card-text">{{LucroMes}}</p>
           </div>
         </div>
       </div>
@@ -23,16 +23,16 @@
         <div class="card text-center cardCorpo">
           <div
             class="card-header cardHeader"
-          >Ganho em relação ultimo periodo {{ new Date().getMonth() }}/{{ new Date().getFullYear() }}</div>
+          >ultimo periodo {{ new Date().getMonth() }}/{{ new Date().getFullYear() }}</div>
           <div class="card-body">
-            <p style="font-size: 22px" class="card-text">{{this.total}}</p>
+            <p style="font-size: 22px" class="card-text">{{GanhoPeriodo}}</p>
           </div>
         </div>
       </div>
     </div>
-    <div class="row mt-3 ">
-      <div class="col-6 ">
-          <bargrafico title="Evoluçao de patrimonio"></bargrafico>
+    <div class="row mt-3">
+      <div class="col-6">
+        <bargrafico title="Evoluçao de patrimonio"></bargrafico>
       </div>
       <div class="col">
         <pierafico title="Distribuição de recursos"></pierafico>
@@ -43,7 +43,7 @@
         <div class="card text-center cardCorpo">
           <div class="card-header cardHeader">Desempenho de fundos</div>
           <div class="card-body">
-            <table class="table table-light" style="font-size: 0.8rem">
+            <table class="table table-striped" style="font-size: 0.8rem">
               <thead>
                 <tr>
                   <th scope="col">Status</th>
@@ -52,12 +52,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
+                <tr v-for="fundo in Fundos" :key="fundo">
+                  <td class="p-0">
                     <i></i>
                   </td>
-                  <td>Daycoval Debêntures Incentiva FIM C Priv</td>
-                  <td>3.25%</td>
+                  <td class="p-0">{{fundo}}</td>
+                  <td class="p-0">3.25%</td>
                 </tr>
               </tbody>
             </table>
@@ -85,6 +85,22 @@ export default {
   components: {
     bargrafico,
     pierafico
+  },
+  data () {
+    return {
+      Patrimonio: 159041.23,
+      LucroMes: 1320.35,
+      GanhoPeriodo: '3,25%',
+      Fundos: [
+        'Daycoval Debêntures Incentiva FIM C Priv',
+        'LCI/DAYCOVAL 97.5%',
+        'LCI/DAYCOVAL 100%',
+        'Constância Fundamento FIA',
+        'Daycoval Ibovespa Ativo FIA',
+        'LCI Banco do Brasil',
+        ' BP Debêntures Incentiv 45 FIC FIM C Priv'
+      ]
+    }
   }
 }
 </script>

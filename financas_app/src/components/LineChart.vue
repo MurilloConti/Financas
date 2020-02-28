@@ -1,13 +1,17 @@
 <template>
-  <div class="card cardCorpo">
+  <div class="card cardCorpo shadow-sm">
     <div class="card-header cardHeader">{{Title}}</div>
     <div class="card-body">
-      <!-- <GChart type="LineChart" :data="chartData" :options="chartOptions" /> -->
-       <GChart
+      <GChart
        type="AreaChart"
        :data="chartData"
-       :options="chartOptions"
-      />
+       :options="chartOptions"/>
+    </div>
+    <div class="card-footer">
+      <div class="row">
+<div class="col-6 align-items-center justify-content-center"><p style="color:#424242;font-size:22px;font-weight:bold">R$: 14.70</p></div>
+<div class="col-6 align-items-center justify-content-center"> <p style="color:#424242;font-size:20px;font-weight:bold">- 8.99% <i class="fas fa-long-arrow-alt-down" style="color:red"></i></p></div>
+      </div>
     </div>
   </div>
 </template>

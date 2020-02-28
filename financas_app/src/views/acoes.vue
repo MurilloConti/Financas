@@ -1,22 +1,27 @@
 <template>
-    <div class="acoes container">
-            <div class="row mt-3 ">
-             <div class="col-6 mt-2">
+    <div class="acoes">
+      <div class="row align-items-center justify-content-center m-0" style="background:#217346;height:10vh">
+        <h3 style="color:#ffffff">Carteira</h3>
+      </div>
+      <div class="container-fluid">
+            <div class="row mt-3">
+             <div class="col-3 mt-2">
             <linegrafico title="VVAR3"></linegrafico>
             </div>
-             <div class="col-6 mt-2">
+             <div class="col-3 mt-2">
             <linegrafico title="VVAR3"></linegrafico>
             </div>
-            <div class="col-6 mt-2">
+            <div class="col-3 mt-2">
             <linegrafico title="VVAR3"></linegrafico>
             </div>
-            <div class="col-6 mt-2">
+            <div class="col-3 mt-2">
             <linegrafico title="VVAR3"></linegrafico>
             </div>
-            <div class="col-6 mt-2">
+            <div class="col-3 mt-2">
             <linegrafico title="VVAR3"></linegrafico>
             </div>
         </div>
+      </div>
     </div>
 </template>
 
@@ -36,7 +41,7 @@ export default {
   font-family: "Exo", sans-serif;
 }
 .cardHeader {
-  background: #00796b;
+  background: #217346;
   color: #ffffff;
   font-weight: bold;
 }

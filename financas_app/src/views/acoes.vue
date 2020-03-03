@@ -9,16 +9,16 @@
             <linegrafico title="VVAR3"></linegrafico>
             </div>
              <div class="col-3 mt-2">
-            <linegrafico title="VVAR3"></linegrafico>
+            <linegrafico title="MGLU3"></linegrafico>
             </div>
             <div class="col-3 mt-2">
-            <linegrafico title="VVAR3"></linegrafico>
+            <linegrafico title="JBSS3"></linegrafico>
             </div>
             <div class="col-3 mt-2">
-            <linegrafico title="VVAR3"></linegrafico>
+            <linegrafico title="LCAM3"></linegrafico>
             </div>
             <div class="col-3 mt-2">
-            <linegrafico title="VVAR3"></linegrafico>
+            <linegrafico title="WEGE3"></linegrafico>
             </div>
         </div>
       </div>

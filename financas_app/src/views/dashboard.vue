@@ -68,7 +68,7 @@
         <div class="card text-center cardCorpo">
           <div class="card-header cardHeader">Lucro no mês</div>
           <div class="card-body">
-            <p style="font-size: 22px" class="card-text">R$20.000,00</p>
+            <p style="font-size: 22px" class="card-text">- R$4.300,00</p>
           </div>
         </div>
       </div>
@@ -88,17 +88,17 @@ export default {
   },
   data () {
     return {
-      Patrimonio: 159041.23,
-      LucroMes: 1320.35,
-      GanhoPeriodo: '3,25%',
+      Patrimonio: 999999.99,
+      LucroMes: 9999.99,
+      GanhoPeriodo: '-3,25%',
       Fundos: [
         'Daycoval Debêntures Incentiva FIM C Priv',
-        'LCI/DAYCOVAL 97.5%',
-        'LCI/DAYCOVAL 100%',
+        'LCI/DAYCOVAL 97.5% CDI',
+        'LCI/DAYCOVAL 100% CDI',
         'Constância Fundamento FIA',
         'Daycoval Ibovespa Ativo FIA',
-        'LCI Banco do Brasil',
-        ' BP Debêntures Incentiv 45 FIC FIM C Priv'
+        'ALASKA BLACK Institucional FIA',
+        'Constellation Institucional FIA'
       ]
     }
   }

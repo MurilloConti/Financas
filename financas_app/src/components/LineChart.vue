@@ -1,6 +1,15 @@
 <template>
   <div class="card cardCorpo shadow-sm">
-    <div class="card-header cardHeader">{{Title}}</div>
+    <div class="card-header cardHeader">
+     <div class="row">
+      <div class="col-10">
+        {{Title}}
+      </div>
+      <div class="col-1">
+        <a style="cursor:pointer"><i class="fas fa-times"></i></a>
+      </div>
+     </div>
+    </div>
     <div class="card-body">
       <GChart
        type="AreaChart"

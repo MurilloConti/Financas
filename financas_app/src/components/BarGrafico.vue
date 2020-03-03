@@ -23,18 +23,18 @@ export default {
       // Array will be automatically processed with visualization.arrayToDataTable function
       chartData: [
         ['Mes', 'Valor'],
-        ['Jan', 83719.88],
-        ['Fev', 83719.88],
-        ['Mar', 83719.88],
-        ['Abr', 83719.88],
-        ['Mai', 83719.88],
-        ['Jun', 83719.88],
-        ['Jul', 83719.88],
-        ['Ago', 83719.88],
-        ['Set', 83719.88],
-        ['Out', 83719.88],
-        ['Nov', 83719.88],
-        ['Dez', 83719.88]
+        ['Jan', 10000.88],
+        ['Fev', 20000.88],
+        ['Mar', 30000.88],
+        ['Abr', 40000.88],
+        ['Mai', 50000.88],
+        ['Jun', 60000.88],
+        ['Jul', 70000.88],
+        ['Ago', 80000.88],
+        ['Set', 90000.88],
+        ['Out', 100000.88],
+        ['Nov', 110000.88],
+        ['Dez', 120000.88]
       ],
       chartOptions: {
         colors: ['#F9A825']

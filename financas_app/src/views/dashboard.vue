@@ -1,5 +1,7 @@
 <template>
-  <div class="dashboard container">
+  <div class="dashboard">
+  <Vheader Title="DashBoard"></Vheader>
+      <div class="container">
     <div class="row mt-3">
       <div class="col">
         <div class="card text-center cardCorpo">
@@ -74,17 +76,20 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import bargrafico from '@/components/BarGrafico.vue'
 import pierafico from '@/components/PieChart.vue'
+import Vheader from '@/components/Vheader.vue'
 export default {
   name: 'dashboard',
   components: {
     bargrafico,
-    pierafico
+    pierafico,
+    Vheader
   },
   data () {
     return {

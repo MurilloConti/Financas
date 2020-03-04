@@ -14,7 +14,7 @@
                                     <i class="fas fa-user"></i>
                                 </span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Usuario">
+                            <input type="text" class="form-control" placeholder="Email" v-model="form.email">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -22,18 +22,18 @@
                                     <i class="fas fa-unlock-alt"></i>
                                 </span>
                             </div>
-                            <input type="password" class="form-control" placeholder="Senha">
+                            <input type="password" class="form-control" placeholder="Senha" v-model="form.password">
                         </div>
-                        <input type="button" class="btn btn-primary form-control" value="Entrar" v-on:click="goToDashBoard()">
+                        <input type="button" class="btn btn-primary form-control" value="Entrar" v-on:click="submit ()">
                         <div class="row">
                             <div class="col-12">
                                 <a>Cadastrar</a>
                             </div>
                             </div>
-                        <div class="row">
+                        <div class="row" v-if="error">
                             <div class="col-12 mt-4">
                                 <div class="alert alert-danger text-center" role="alert">
-                                    Usuario ou senha invalidos.
+                                  {{error}}
                                 </div>
                             </div>
                         </div>
@@ -48,6 +48,7 @@
 
 <script>
 import Wating from '@/components/Wating.vue'
+import firebase from 'firebase'
 export default {
   name: 'LogIn',
   components: {
@@ -55,29 +56,24 @@ export default {
   },
   data () {
     return {
-      StartUps: []
+      form: {
+        email: '',
+        password: ''
+      },
+      error: null
     }
   },
   methods: {
-    // loginFireBase() {
-    //   fb.auth
-    //     .signInAnonymously()
-    //     .then(user => {
-    //       this.$store.commit("setCurrentUser", user.user.uid);
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //     });
-    // },
-    goToDashBoard: function () {
-    //   var startup = this.StartUps.allStartups[index];
-    //   this.$store.commit("setSelectedStartUp", {
-    //     title: startup.name,
-    //     text: startup.Segment.name,
-    //     Url: startup.imageUrl,
-    //     description: startup.description
-    //   });
-      this.$router.push('dashboard')
+    submit () {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.form.email, this.form.password)
+        .then(data => {
+          this.$router.push('dashboard')
+        })
+        .catch(err => {
+          this.error = err.message
+        })
     },
     goToRegister: function () {
       this.$router.push('dashboard')

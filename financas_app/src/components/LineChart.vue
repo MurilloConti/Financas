@@ -6,7 +6,7 @@
         {{Title}}
       </div>
       <div class="col-1">
-        <a style="cursor:pointer"><i class="fas fa-times"></i></a>
+        <a style="cursor:pointer" v-on:click="removeAcao()"><i class="fas fa-times"></i></a>
       </div>
      </div>
     </div>
@@ -18,8 +18,8 @@
     </div>
     <div class="card-footer">
       <div class="row">
-<div class="col-6 align-items-center justify-content-center"><p style="color:#424242;font-size:22px;font-weight:bold">R$: 14.70</p></div>
-<div class="col-6 align-items-center justify-content-center"> <p style="color:#424242;font-size:20px;font-weight:bold">- 8.99% <i class="fas fa-long-arrow-alt-down" style="color:red"></i></p></div>
+<div class="col-6 align-items-center justify-content-center"><p style="color:#424242;font-size:20px;font-weight:bold">R$: {{ Number(valorAtual['05. price']).toFixed(2) }}</p></div>
+<div class="col-6 align-items-center justify-content-center"> <p style="color:#424242;font-size:20px;font-weight:bold">{{ valorAtual['10. change percent']}} <i class="fas fa-long-arrow-alt-down" style="color:red"></i></p></div>
       </div>
     </div>
   </div>
@@ -27,33 +27,22 @@
 
 <script>
 import { GChart } from 'vue-google-charts'
-
+import axios from 'axios'
+import { store } from '@/store/index.js'
 export default {
   name: 'LineChart',
   props: {
-    Title: String
+    Title: String,
+    Acao: Object
   },
   components: {
     GChart
   },
   data () {
     return {
-      chartData: [
-        ['Data', 'VVAR3'],
-        ['2019/2', 4.5800],
-        ['2019/3', 4.2200],
-        ['2019/4', 4.1000],
-        ['2019/5', 4.6900],
-        ['2019/6', 5.0700],
-        ['2019/7', 7.7200],
-        ['2019/8', 7.7300],
-        ['2019/9', 7.9200],
-        ['2019/10', 7.4200],
-        ['2019/11', 8.8100],
-        ['2019/12', 11.1700],
-        ['2020/01', 14.0000],
-        ['2020/02', 14.9700]
-      ],
+      chartData: [],
+      acao: null,
+      valorAtual: [],
       chartOptions: {
         chart: {
           title: 'Company Performance',
@@ -61,6 +50,38 @@ export default {
         }
       }
     }
+  },
+  methods: {
+    GetCotacao: function () {
+      let url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + this.$props.Acao['1. symbol'] + '&interval=15min&apikey=PTNHBBIDUPE7QRHZ'
+      axios.get(url).then((response) => {
+        for (let i in response.data['Time Series (15min)']) {
+          let a = response.data['Time Series (15min)'][i]
+          let obj = [i, Number(a['4. close'])]
+          this.chartData.push(obj)
+        }
+        this.chartData.push(['Data', this.$props.Acao['1. symbol']])
+        this.chartData = this.chartData.reverse()
+      },
+      (error) => { alert(error) })
+    },
+    GetAtual: function () {
+      let url = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=' + this.$props.Acao['1. symbol'] + '&apikey=PTNHBBIDUPE7QRHZ'
+      axios.get(url).then((response) => {
+        let a = response.data['Global Quote']
+        this.valorAtual = a
+      },
+      (error) => { alert(error) })
+    },
+    removeAcao: function () {
+      var acoesCarteira = store.state.carteiraAcoes
+      acoesCarteira.splice(acoesCarteira.findIndex(v => v['1. symbol'] === this.$props.Acao['1. symbol']), 1)
+      store.commit('setCarteiraAcoes', acoesCarteira)
+    }
+  },
+  created () {
+    this.GetCotacao()
+    this.GetAtual()
   }
 }
 </script>

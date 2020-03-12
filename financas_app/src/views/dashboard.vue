@@ -70,7 +70,7 @@
         <div class="card text-center cardCorpo">
           <div class="card-header cardHeader">Lucro no mês</div>
           <div class="card-body">
-            <p style="font-size: 22px" class="card-text">- R$4.300,00</p>
+            <p style="font-size: 22px" class="card-text">- R$14.300,00</p>
           </div>
         </div>
       </div>

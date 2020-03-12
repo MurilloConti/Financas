@@ -49,6 +49,7 @@
 <script>
 import Wating from '@/components/Wating.vue'
 import firebase from 'firebase'
+import { store } from '@/store/index.js'
 export default {
   name: 'LogIn',
   components: {
@@ -68,7 +69,8 @@ export default {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.form.email, this.form.password)
-        .then(data => {
+        .then(user => {
+          store.commit('setCurrentUser', user.user.uid)
           this.$router.push('dashboard')
         })
         .catch(err => {

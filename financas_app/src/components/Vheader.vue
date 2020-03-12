@@ -2,7 +2,7 @@
   <div class="Vheader">
     <div class="row align-items-center justify-content-center m-0" style="background:#217346;height:10vh">
         <div class="col-2">
-<i class="fas fa-home" style="color:#ffffff"></i>
+<i class="fas fa-home" style="color:#ffffff" v-on:click="goToDashboard()"></i>
         </div>
       <div class="col-8">
           <h3 style="color:#ffffff">{{Title}} <i class="fas fa-tachometer-alt" style="color:#ffffff"></i></h3>

@@ -9,7 +9,7 @@
 
 <script>
 import { GChart } from 'vue-google-charts'
-
+import { store } from '@/store/index.js'
 export default {
   name: 'PieChart',
   props: {
@@ -22,19 +22,23 @@ export default {
   data () {
     return {
       chartData: [
-        ['Fundo', 'Valor'],
-        ['Daycoval Debêntures Incentiva FIM C Priv', 83719.88],
-        ['LCI/DAYCOVAL 97.5%', 38191.19],
-        ['LCI/DAYCOVAL 100%', 9291.02],
-        ['Constância Fundamento FIA', 10181.65],
-        ['Daycoval Ibovespa Ativo FIA', 16417.96],
-        ['LCI Banco do Brasil', 0],
-        [' BP Debêntures Incentiv 45 FIC FIM C Priv', 0]
+        ['Fundo', 'Valor']
       ],
       chartOptions: {
         pieHole: 0.38
       }
     }
+  },
+  methods: {
+    montaGrafico: function (event) {
+      let carteira = store.state.carteiraAcoes
+      carteira.forEach(element => {
+        this.chartData.push([element.Name, Number((element.Qtd * element.Price))])
+      })
+    }
+  },
+  created () {
+    this.montaGrafico()
   }
 }
 </script>

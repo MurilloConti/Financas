@@ -3,7 +3,7 @@
     <div class="card-header cardHeader">
      <div class="row">
       <div class="col-10">
-        {{Title}}
+        {{Title.split('.')[0]}}
       </div>
       <div class="col-1">
         <a style="cursor:pointer" v-on:click="removeAcao()"><i class="fas fa-times"></i></a>
@@ -29,6 +29,7 @@
 import { GChart } from 'vue-google-charts'
 import axios from 'axios'
 import { store } from '@/store/index.js'
+const fb = require('@/firebaseConfig.js')
 export default {
   name: 'LineChart',
   props: {
@@ -53,20 +54,20 @@ export default {
   },
   methods: {
     GetCotacao: function () {
-      let url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + this.$props.Acao['1. symbol'] + '&interval=15min&apikey=PTNHBBIDUPE7QRHZ'
+      let url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + this.acao.Code + '&interval=15min&apikey=PTNHBBIDUPE7QRHZ'
       axios.get(url).then((response) => {
         for (let i in response.data['Time Series (15min)']) {
           let a = response.data['Time Series (15min)'][i]
           let obj = [i, Number(a['4. close'])]
           this.chartData.push(obj)
         }
-        this.chartData.push(['Data', this.$props.Acao['1. symbol']])
+        this.chartData.push(['Data', this.acao.Code])
         this.chartData = this.chartData.reverse()
       },
       (error) => { alert(error) })
     },
     GetAtual: function () {
-      let url = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=' + this.$props.Acao['1. symbol'] + '&apikey=PTNHBBIDUPE7QRHZ'
+      let url = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=' + this.acao.Code + '&apikey=PTNHBBIDUPE7QRHZ'
       axios.get(url).then((response) => {
         let a = response.data['Global Quote']
         this.valorAtual = a
@@ -74,12 +75,24 @@ export default {
       (error) => { alert(error) })
     },
     removeAcao: function () {
-      var acoesCarteira = store.state.carteiraAcoes
-      acoesCarteira.splice(acoesCarteira.findIndex(v => v['1. symbol'] === this.$props.Acao['1. symbol']), 1)
-      store.commit('setCarteiraAcoes', acoesCarteira)
+      if (window.confirm('Quer mesmo excluir?')) {
+        fb.usuariosCollection
+          .doc(store.state.currentUser)
+          .collection('Acoes')
+          .doc(this.acao.Code)
+          .delete().then(function () {
+            var acoesCarteira = store.state.carteiraAcoes
+            console.log(acoesCarteira.findIndex(x => x.Code === this.acao.Code))
+            acoesCarteira.splice(acoesCarteira.findIndex(x => x.Code === this.acao.Code), 1)
+            store.commit('setCarteiraAcoes', acoesCarteira)
+          }).catch(function (e) {
+            console.error('Error removing document: ', e)
+          })
+      }
     }
   },
   created () {
+    this.acao = this.$props.Acao
     this.GetCotacao()
     this.GetAtual()
   }

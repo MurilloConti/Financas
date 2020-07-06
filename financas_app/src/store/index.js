@@ -7,7 +7,7 @@ export const store = new Vuex.Store({
   state: {
     currentUser: null,
     userProfile: {},
-    carteiraAcoes: {}
+    carteiraAcoes: []
   },
   mutations: {
     setCurrentUser (state, val) {

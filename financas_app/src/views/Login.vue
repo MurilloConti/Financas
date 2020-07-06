@@ -24,10 +24,10 @@
                             </div>
                             <input type="password" class="form-control" placeholder="Senha" v-model="form.password">
                         </div>
-                        <input type="button" class="btn btn-primary form-control" value="Entrar" v-on:click="submit ()">
+                        <input type="button" class="btn btn-primary form-control botao" value="Entrar" v-on:click="submit ()">
                         <div class="row">
                             <div class="col-12">
-                                <a>Cadastrar</a>
+                                <a v-on:click="goToRegister()" class="pointer">Cadastrar</a>
                             </div>
                             </div>
                         <div class="row" v-if="error">
@@ -71,6 +71,11 @@ export default {
         .signInWithEmailAndPassword(this.form.email, this.form.password)
         .then(user => {
           store.commit('setCurrentUser', user.user.uid)
+          const userInfo = {
+            displayName: user.user.displayName,
+            email: user.user.email
+          }
+          store.commit('setUserProfile', userInfo)
           this.$router.push('dashboard')
         })
         .catch(err => {
@@ -78,7 +83,7 @@ export default {
         })
     },
     goToRegister: function () {
-      this.$router.push('dashboard')
+      this.$router.push('register')
     }
   }
 }
@@ -88,4 +93,12 @@ export default {
             background: url(https://www.netdente.com.br/images/banner_home_003.jpg) no-repeat right;
             background-size: cover;
         }
+
+  .botao {
+    background: #47848d !important;
+  }
+  .pointer {
+    cursor: pointer;
+
+  }
 </style>

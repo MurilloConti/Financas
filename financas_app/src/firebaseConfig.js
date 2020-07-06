@@ -17,16 +17,10 @@ const db = firebase.firestore()
 const auth = firebase.auth()
 
 // firebase collections
-const propostasCollection = db.collection('Proposta')
-const pitchCollection = db.collection('Apresentacao')
-const desenvolvimentoCollection = db.collection('Desenvolvimento')
-const UsersCollection = db.collection('Votantes')
+const usuariosCollection = db.collection('Usuarios')
 
 export {
   db,
   auth,
-  propostasCollection,
-  pitchCollection,
-  desenvolvimentoCollection,
-  UsersCollection
+  usuariosCollection
 }

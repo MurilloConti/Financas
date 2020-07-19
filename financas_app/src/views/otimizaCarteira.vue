@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <walletTable :wallet="this.carteira" :stocks="this.acoesCarteira" />
+                    <walletTable :wallet="this.carteira" />
                 </div>
             </div>
             <div class="row">
@@ -50,20 +50,36 @@ export default {
   },
   data () {
     return {
+      acoesCarteira: []
     }
   },
   computed: {
     lucroVendas () {
-      return Number(store.state.lucroVendas).toFixed(2)
-    },
-    acoesCarteira () {
-      return store.state.carteiraAcoes
+      let totalGain = 0
+      store.state.carteiraAcoes.forEach(element => {
+        if (element.Operacao < 0) {
+          totalGain += ((element.Operacao * -1) * element.Price)
+        }
+      })
+      return Number(totalGain).toFixed(2)
     },
     GastosCompra () {
-      return Number(store.state.GastosCompra).toFixed(2)
+      let totalGasto = 0
+      store.state.carteiraAcoes.forEach(element => {
+        if (element.Operacao > 0) {
+          totalGasto += (element.Operacao * element.Price)
+        }
+      })
+      return Number(totalGasto).toFixed(2)
     },
     GastosTaxas () {
-      return Number(store.state.totalOperacoes * 6.9).toFixed(2)
+      let totalOper = 0
+      store.state.carteiraAcoes.forEach(element => {
+        if (element.Operacao !== 0 && !isNaN(element.Operacao)) {
+          totalOper += 1
+        }
+      })
+      return Number(totalOper * 6.9).toFixed(2)
     },
     carteira () {
       return store.state.carteiras[0]
@@ -72,6 +88,7 @@ export default {
   methods: {
   },
   created () {
+    this.acoesCarteira = store.state.carteiraAcoes
   }
 }
 </script>

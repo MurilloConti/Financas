@@ -43,6 +43,13 @@ export const store = new Vuex.Store({
     },
     SET_EVOLUCAO_PATRIMONIO (state, val) {
       state.evolucaoPatrimonio = val
+    },
+    SET_ACAO_IN_CARTEIRA (state, val) {
+      store.state.carteiraAcoes.forEach(element => {
+        if (element.Code === val.Code) {
+          element.Operacao = val.Operacao
+        }
+      })
     }
   },
   actions: {
@@ -69,6 +76,9 @@ export const store = new Vuex.Store({
     },
     setTotalOperacoes ({ commit }, val) {
       commit('SET_TOTAL_OPERACOES', val)
+    },
+    setAcaoInCarteira ({ commit }, val) {
+      commit('SET_ACAO_IN_CARTEIRA', val)
     },
     fetchAcoesCarteira ({ commit }, val) {
       if (val) {

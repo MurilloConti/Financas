@@ -15,14 +15,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="acao in this.acoes" :key="acao.Code">
+                        <tr v-for="acao in this.acoesCarteira" :key="acao.Code">
                         <td class="p-0">{{acao.Code.split('.')[0]}}</td>
                         <td class="p-0">R$: {{Number(acao.Price).toFixed(2)}}</td>
                         <td class="p-0">R$: {{Number(acao.Qtd * acao.Price).toFixed(2)}}</td>
                         <td class="p-0">{{acao.Qtd}}</td>
                         <td class="p-0">{{calculateGainPercentage(acao)}} %</td>
                         <td class="p-0" style="width:150px">
-                            <input type="text" class="form-control text-center" v-model="acao.percentualIdeal"  />
+                            <input type="text" class="form-control text-center" v-model="acao.percentualIdeal" />
                         </td>
                         <td class="p-0">{{calculateActualPercentage(acao)}} %</td>
                         <td :class="getLucroPrejuizoClass(acao)">R$: {{calculateGain(acao)}}</td>
@@ -89,34 +89,32 @@ export default {
         let quantoQuero = (percIdeal / 100) * this.$props.wallet.patrimony
         let quantoFalta = quantoQuero - quantoTenho
         let totalOperacao = quantoFalta / acao.Price
-        // if (Math.ceil(totalOperacao) !== 0) {
-        //   let qtd = 1 + this.totalOperacoes
-        //   this.totalOperacoes = qtd
-        //   console.log(this.totalOperacoes)
-        // }
+        acao.Operacao = Math.ceil(totalOperacao)
+        store.dispatch('setAcaoInCarteira', acao)
         return Math.ceil(totalOperacao)
       }
     }
   },
   computed: {
-    acoes () {
-      let acoes = []
-      this.$props.stocks.forEach(element => {
-        let acao = {
-          Code: element.Code,
-          Name: element.Name,
-          Qtd: element.Qtd,
-          Cost: element.Cost,
-          Price: element.Price,
-          Operacao: 0,
-          percentualIdeal: 10
-        }
-        acoes.push(acao)
-      })
-      return acoes
+    acoesCarteira () {
+      return store.state.carteiraAcoes
     }
   },
   created () {
+    let acoes = []
+    store.state.carteiraAcoes.forEach(element => {
+      let acao = {
+        Code: element.Code,
+        Name: element.Name,
+        Qtd: element.Qtd,
+        Cost: element.Cost,
+        Price: element.Price,
+        Operacao: 0,
+        percentualIdeal: 10
+      }
+      acoes.push(acao)
+    })
+    store.dispatch('fetchAcoesCarteira', acoes)
   }
 }
 </script>

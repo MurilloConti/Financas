@@ -59,7 +59,7 @@
                     {{acao.Code.split('.')[0]}}
                   </td>
                   <td class="p-0">{{acao.Name}}</td>
-                  <td class="p-0">3.25%</td>
+                  <td class="p-0">{{calculateValPerc(acao)}} %</td>
                 </tr>
               </tbody>
             </table>
@@ -116,6 +116,18 @@ export default {
     }
   },
   methods: {
+    calculateGain: function (acao) {
+      if (acao) {
+        return Number((acao.Qtd * acao.Price) - (acao.Qtd * acao.Cost)).toFixed(2)
+      }
+    },
+    calculateValPerc: function (acao) {
+      console.log(acao)
+      if (acao) {
+        let totalAtual = acao.Qtd * acao.Price
+        return Number((this.calculateGain(acao) * 100) / totalAtual).toFixed(2)
+      }
+    }
   },
   beforeCreate () {
     store.dispatch('fetchAcoesCarteira')

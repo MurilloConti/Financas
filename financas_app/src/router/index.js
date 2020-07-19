@@ -4,6 +4,7 @@ import Login from '../views/Login.vue'
 import Register from '../views/registro.vue'
 import Dashboard from '../views/dashboard.vue'
 import Acoes from '../views/acoes.vue'
+import otimizaCarteira from '../views/otimizaCarteira.vue'
 import firebase from 'firebase'
 Vue.use(VueRouter)
 
@@ -17,6 +18,26 @@ const routes = [
     path: '/dashboard',
     name: 'dashboard',
     component: Dashboard,
+    meta: {
+      requiresAuth: true
+    },
+    beforeEnter: (to, from, next) => {
+      const requiresAuth = to.matched.some(x => x.meta.requiresAuth)
+      const currentUser = firebase.auth().currentUser
+
+      if (requiresAuth && !currentUser) {
+        next()
+      } else if (requiresAuth && currentUser) {
+        next()
+      } else {
+        next()
+      }
+    }
+  },
+  {
+    path: '/otimizaCarteira',
+    name: 'otimizaCarteira',
+    component: otimizaCarteira,
     meta: {
       requiresAuth: true
     },

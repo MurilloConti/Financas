@@ -1,7 +1,7 @@
 <template>
   <div class="card cardCorpo">
     <div class="card-header cardHeader">{{Title}}</div>
-    <div class="card-body">
+    <div class="card-body" style="padding:0px; min-height: 235px">
       <GChart type="ColumnChart" :data="chartData" :options="chartOptions" />
     </div>
   </div>
@@ -13,32 +13,26 @@ import { GChart } from 'vue-google-charts'
 export default {
   name: 'ColumnChart',
   props: {
-    Title: String
+    Title: String,
+    dados: Array
   },
   components: {
     GChart
   },
   data () {
     return {
-      // Array will be automatically processed with visualization.arrayToDataTable function
-      chartData: [
-        ['Mes', 'Valor'],
-        ['Jan', 10000.88],
-        ['Fev', 20000.88],
-        ['Mar', 30000.88],
-        ['Abr', 40000.88],
-        ['Mai', 50000.88],
-        ['Jun', 60000.88],
-        ['Jul', 70000.88],
-        ['Ago', 80000.88],
-        ['Set', 90000.88],
-        ['Out', 100000.88],
-        ['Nov', 110000.88],
-        ['Dez', 120000.88]
-      ],
       chartOptions: {
         colors: ['#F9A825']
       }
+    }
+  },
+  computed: {
+    chartData () {
+      let chartData = [['Mes', 'Valor']]
+      this.$props.dados.forEach(element => {
+        chartData.push([element.mes, Number(element.total)])
+      })
+      return chartData
     }
   }
 }

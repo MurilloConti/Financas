@@ -15,9 +15,9 @@
         <div class="card text-center cardCorpo">
           <div
             class="card-header cardHeader"
-          >Lucro no mês {{ new Date().getMonth() + 1 }}/{{ new Date().getFullYear() }}</div>
+          >Lucro acumulado</div>
           <div class="card-body">
-            <p style="font-size: 22px" class="card-text">R$: {{ Number(Patrimonio - totalAplicado).toFixed(2)}}</p>
+            <p style="font-size: 22px" class="card-text">R$: {{ Number(Patrimonio - TotalAplicado).toFixed(2)}}</p>
           </div>
         </div>
       </div>
@@ -25,19 +25,19 @@
         <div class="card text-center cardCorpo">
           <div
             class="card-header cardHeader"
-          >no periodo {{ new Date().getMonth() + 1 }}/{{ new Date().getFullYear() }}</div>
+          >Lucro percentual</div>
           <div class="card-body">
-            <p style="font-size: 22px" class="card-text">{{GanhoPeriodo}} %</p>
+            <p style="font-size: 22px" class="card-text">{{LucroPercentual}} %</p>
           </div>
         </div>
       </div>
     </div>
     <div class="row mt-3">
       <div class="col-6">
-        <bargrafico title="Evoluçao de patrimonio"></bargrafico>
+        <bargrafico Title="Evoluçao de patrimonio" :dados="this.evolPatrimonio"></bargrafico>
       </div>
       <div class="col">
-        <pierafico title="Distribuição de recursos"></pierafico>
+        <pierafico Title="Distribuição de recursos" :dados="this.carteiraAcoes" ></pierafico>
       </div>
     </div>
     <div class="row mt-3">
@@ -86,35 +86,41 @@ export default {
   },
   data () {
     return {
-      Patrimonio: 0,
-      LucroMes: 9999.99,
-      totalAplicado: 0,
-      GanhoPeriodo: 0,
-      carteiraAcoes: []
+    }
+  },
+  computed: {
+    Patrimonio () {
+      let Patrimonio = 0
+      store.state.carteiraAcoes.forEach(element => {
+        Patrimonio = Patrimonio + (element.Qtd * element.Price)
+      })
+      return Patrimonio
+    },
+    TotalAplicado () {
+      let totalAplicado = 0
+      store.state.carteiraAcoes.forEach(element => {
+        totalAplicado = totalAplicado + (element.Qtd * element.Cost)
+      })
+      return totalAplicado
+    },
+    LucroPercentual () {
+      let GanhoPeriodo = 0
+      GanhoPeriodo = Number((Number(this.Patrimonio - this.TotalAplicado) * 100) / this.Patrimonio).toFixed(2)
+      return GanhoPeriodo
+    },
+    carteiraAcoes () {
+      return store.state.carteiraAcoes
+    },
+    evolPatrimonio () {
+      return store.state.evolucaoPatrimonio
     }
   },
   methods: {
-    calculaPatrimonio: function (event) {
-      let carteira = store.state.carteiraAcoes
-      carteira.forEach(element => {
-        this.Patrimonio = this.Patrimonio + (element.Qtd * element.Price)
-      })
-    },
-    calculaInvestimento: function (event) {
-      let carteira = store.state.carteiraAcoes
-      carteira.forEach(element => {
-        this.totalAplicado = this.totalAplicado + (element.Qtd * element.Cost)
-      })
-    },
-    calculaLucroPercentual: function (event) {
-      this.GanhoPeriodo = Number((Number(this.Patrimonio - this.totalAplicado) * 100) / this.Patrimonio).toFixed(2)
-    }
   },
-  created () {
-    this.calculaPatrimonio()
-    this.calculaInvestimento()
-    this.calculaLucroPercentual()
-    this.carteiraAcoes = store.state.carteiraAcoes
+  beforeCreate () {
+    store.dispatch('fetchAcoesCarteira')
+    store.dispatch('fetchEvolPatrimonio')
+    store.dispatch('fetchCarteiras')
   }
 }
 </script>

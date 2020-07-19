@@ -1,6 +1,6 @@
 <template>
   <div class="acoes">
-    <Vheader Title="Carteira"></Vheader>
+    <Vheader Title="Controle de Carteira"></Vheader>
     <div class="">
       <a class="fab" accesskey="f" data-toggle="modal" data-target="#modalAcoes" v-on:click="limpaBusca()">
         <i class="fas fa-plus" style="font-size:17px; color:#ffffff;margin-top:15px"></i>
@@ -108,20 +108,9 @@ export default {
   },
 
   beforeCreate () {
-    let that = this
-    fb.usuariosCollection.doc(store.state.currentUser).collection('Acoes')
-      .onSnapshot(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          let acao = {
-            Code: doc.data().Cod,
-            Name: doc.data().Name,
-            Qtd: doc.data().Qtd,
-            Cost: doc.data().Cost,
-            Price: doc.data().Price
-          }
-          that.addCarteira(acao)
-        })
-      })
+    if (store.state.carteiraAcoes.length === 0) {
+      store.dispatch('fetchAcoesCarteira')
+    }
   },
   methods: {
     GetAcao: function () {

@@ -70,12 +70,12 @@ export default {
         .auth()
         .signInWithEmailAndPassword(this.form.email, this.form.password)
         .then(user => {
-          store.commit('setCurrentUser', user.user.uid)
+          store.dispatch('setCurrentUser', user.user.uid)
           const userInfo = {
             displayName: user.user.displayName,
             email: user.user.email
           }
-          store.commit('setUserProfile', userInfo)
+          store.dispatch('setUserProfile', userInfo)
           this.$router.push('dashboard')
         })
         .catch(err => {
@@ -84,6 +84,11 @@ export default {
     },
     goToRegister: function () {
       this.$router.push('register')
+    }
+  },
+  created () {
+    if (store.state.currentUser) {
+      this.$router.push('dashboard')
     }
   }
 }

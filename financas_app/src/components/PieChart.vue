@@ -1,7 +1,7 @@
 <template>
   <div class="card cardCorpo">
     <div class="card-header cardHeader">{{Title}}</div>
-    <div class="card-body" style="padding:0px">
+    <div class="card-body" style="padding:0px; min-height: 235px">
       <GChart type="PieChart" :data="chartData" :options="chartOptions" />
     </div>
   </div>
@@ -9,7 +9,6 @@
 
 <script>
 import { GChart } from 'vue-google-charts'
-import { store } from '@/store/index.js'
 export default {
   name: 'PieChart',
   props: {
@@ -21,24 +20,19 @@ export default {
   },
   data () {
     return {
-      chartData: [
-        ['Fundo', 'Valor']
-      ],
       chartOptions: {
         pieHole: 0.38
       }
     }
   },
-  methods: {
-    montaGrafico: function (event) {
-      let carteira = store.state.carteiraAcoes
-      carteira.forEach(element => {
-        this.chartData.push([element.Name, Number((element.Qtd * element.Price))])
+  computed: {
+    chartData () {
+      let chartData = [['Fundo', 'Valor']]
+      this.$props.dados.forEach(element => {
+        chartData.push([element.Name, Number((element.Qtd * element.Price))])
       })
+      return chartData
     }
-  },
-  created () {
-    this.montaGrafico()
   }
 }
 </script>

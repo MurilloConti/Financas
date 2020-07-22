@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getMonthString } from '../utils/dateUtils'
+import { getMonthString, getDateFromSeconds } from '../utils/dateUtils'
+import axios from 'axios'
+import { API_URL, ALPHAVANTAGE_KEY } from '../constants/config'
 const fb = require('../firebaseConfig.js')
 Vue.use(Vuex)
 
@@ -10,6 +12,7 @@ export const store = new Vuex.Store({
     currentUser: null,
     userProfile: {},
     carteiraAcoes: [],
+    rawAcoesData: [],
     carteiras: [],
     evolucaoPatrimonio: [],
     lucroVendas: 0,
@@ -19,6 +22,9 @@ export const store = new Vuex.Store({
   mutations: {
     SET_FETCHING_DATA (state, val) {
       state.isFetchingData = val
+    },
+    SET_RAW_DATA (state, val) {
+      state.rawAcoesData = val
     },
     SET_CURRENT_USER (state, val) {
       state.currentUser = val
@@ -54,7 +60,6 @@ export const store = new Vuex.Store({
   },
   actions: {
     clearData ({ commit }) {
-      commit('setCarteiraAcoes', 0)
       commit('setCarteiras', 0)
       commit('setLucroVendas', 0)
       commit('setGastosCompra', 0)
@@ -64,9 +69,6 @@ export const store = new Vuex.Store({
     },
     setUserProfile ({ commit }, val) {
       commit('SET_USER_PROFILE', val)
-    },
-    setCarteiraAcoesAsync ({ commit }, val) {
-      commit('setCarteiraAcoes', val)
     },
     setLucroVendas ({ commit }, val) {
       commit('SET_LUCRO_VENDAS', val)
@@ -95,7 +97,8 @@ export const store = new Vuex.Store({
                   Name: doc.data().Name,
                   Qtd: doc.data().Qtd,
                   Cost: doc.data().Cost,
-                  Price: doc.data().Price
+                  Price: doc.data().Price,
+                  dtUltAtualiza: getDateFromSeconds(doc.data().lastUpdate.seconds)
                 }
                 arr.push(acao)
               })
@@ -116,7 +119,7 @@ export const store = new Vuex.Store({
           let arr = []
           querySnapshot.forEach(function (doc) {
             let data = {
-              mes: getMonthString(new Date(doc.data().date.seconds * 1000)),
+              mes: getMonthString(getDateFromSeconds(doc.data().date.seconds)),
               total: doc.data().total
             }
             arr.push(data)
@@ -155,6 +158,45 @@ export const store = new Vuex.Store({
         }
       }
       commit('SET_FETCHING_DATA', false)
+    },
+    fetchRawAcoesData ({ commit }, acao) {
+      commit('SET_FETCHING_DATA', true)
+      if (acao.dtUltAtualiza.getTime() < new Date().getTime()) {
+        if (!store.state.rawAcoesData.find(x => x.code === acao.Code)) {
+          let url = API_URL + '?function=TIME_SERIES_DAILY_ADJUSTED&symbol=' + acao.Code + '&apikey=' + ALPHAVANTAGE_KEY
+          let mainObj = {
+            code: acao.Code,
+            data: []
+          }
+          axios.get(url).then((response) => {
+            let TimeSeries = response.data['Time Series (Daily)']
+            Object.keys(TimeSeries).forEach(element => {
+              let low = TimeSeries[element]['3. low']
+              let open = TimeSeries[element]['1. open']
+              let close = TimeSeries[element]['4. close']
+              let high = TimeSeries[element]['2. high']
+              let obj = {
+                date: element,
+                low: Number(low),
+                open: Number(open),
+                close: Number(close),
+                high: Number(high)
+              }
+              mainObj.data.push(obj)
+            })
+            mainObj.data.push(['Data', 'low', 'open', 'close', 'high'])
+            mainObj.data = mainObj.data.reverse()
+            console.log(mainObj)
+          })
+            .catch(function (error) {
+              console.log('ERROR: ', error)
+            })
+          let acoes = store.state.rawAcoesData
+          acoes.push(mainObj)
+          commit('SET_RAW_DATA', acoes)
+          commit('SET_FETCHING_DATA', false)
+        }
+      }
     }
   },
   modules: {
@@ -202,7 +244,8 @@ fb.auth.onAuthStateChanged(user => {
             Name: doc.data().Name,
             Qtd: doc.data().Qtd,
             Cost: doc.data().Cost,
-            Price: doc.data().Price
+            Price: doc.data().Price,
+            dtUltAtualiza: getDateFromSeconds(doc.data().lastUpdate.seconds)
           }
           arr.push(acao)
         })

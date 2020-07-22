@@ -4,6 +4,7 @@
                     <thead>
                         <tr>
                         <th scope="col">Ação</th>
+                        <th scope="col">Custo Compra</th>
                         <th scope="col">Preço atual</th>
                         <th scope="col">Valor total</th>
                         <th scope="col">Quantidade atual</th>
@@ -17,6 +18,7 @@
                     <tbody>
                         <tr v-for="acao in this.acoesCarteira" :key="acao.Code">
                         <td class="p-0">{{acao.Code.split('.')[0]}}</td>
+                        <td class="p-0">R$: {{Number(acao.Cost).toFixed(2)}}</td>
                         <td class="p-0">R$: {{Number(acao.Price).toFixed(2)}}</td>
                         <td class="p-0">R$: {{Number(acao.Qtd * acao.Price).toFixed(2)}}</td>
                         <td class="p-0">{{acao.Qtd}}</td>
@@ -109,6 +111,7 @@ export default {
         Qtd: element.Qtd,
         Cost: element.Cost,
         Price: element.Price,
+        dtUltAtualiza: element.dtUltAtualiza,
         Operacao: 0,
         percentualIdeal: 10
       }

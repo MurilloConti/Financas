@@ -8,8 +8,8 @@
     </div>
     <div class="container-fluid">
       <div class="row mt-3">
-        <div class="col-3 mt-2" v-for="(item,index) in acoesCarteira" v-bind:key="index">
-          <linegrafico :title="item.Code" :Acao="item"></linegrafico>
+        <div class="col-12 mt-2" v-for="(item,index) in acoesCarteira" v-bind:key="index">
+          <AreaChartCard :Title="item.Code"></AreaChartCard>
         </div>
       </div>
     </div>
@@ -87,16 +87,16 @@
 </template>
 
 <script>
-import linegrafico from '@/components/LineChart.vue'
 import Vheader from '@/components/Vheader.vue'
+import AreaChartCard from '../components/AreaChartCard'
 import axios from 'axios'
 import { store } from '@/store/index.js'
 const fb = require('@/firebaseConfig.js')
 export default {
   name: 'acoes',
   components: {
-    linegrafico,
-    Vheader
+    Vheader,
+    AreaChartCard
   },
   data () {
     return {
@@ -148,7 +148,7 @@ export default {
           }
         })
       }
-      store.commit('setCarteiraAcoes', this.acoesCarteira)
+      store.commit('fetchAcoesCarteira', this.acoesCarteira)
     },
     limpaBusca: function () {
       this.acoesBusca = []

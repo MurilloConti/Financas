@@ -122,7 +122,6 @@ export default {
       }
     },
     calculateValPerc: function (acao) {
-      console.log(acao)
       if (acao) {
         let totalAtual = acao.Qtd * acao.Price
         return Number((this.calculateGain(acao) * 100) / totalAtual).toFixed(2)

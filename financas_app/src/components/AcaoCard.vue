@@ -12,7 +12,7 @@
     </div>
     <div class="card-body">
       <GChart
-       type="AreaChart"
+       type="CandlestickChart"
        :data="chartData"
        :options="chartOptions"/>
     </div>
@@ -29,9 +29,10 @@
 import { GChart } from 'vue-google-charts'
 import axios from 'axios'
 import { store } from '@/store/index.js'
+import { API_URL, ALPHAVANTAGE_KEY } from '../constants/config'
 const fb = require('@/firebaseConfig.js')
 export default {
-  name: 'LineChart',
+  name: 'AcaoCard',
   props: {
     Title: String,
     Acao: Object
@@ -45,24 +46,38 @@ export default {
       acao: null,
       valorAtual: [],
       chartOptions: {
-        chart: {
-          title: 'Company Performance',
-          subtitle: 'Sales, Expenses, and Profit: 2014-2017'
-        }
+        legend: 'none',
+        candlestick: {
+          fallingColor: { strokeWidth: 0, fill: '#E53935' },
+          risingColor: { strokeWidth: 0, fill: '#00E676' } // green
+        },
+        colors: ['#BDBDBD']
       }
     }
   },
   methods: {
     GetCotacao: function () {
-      let url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + this.acao.Code + '&interval=15min&apikey=PTNHBBIDUPE7QRHZ'
+      let url = API_URL + '?function=TIME_SERIES_DAILY_ADJUSTED&symbol=' + this.acao.Code + '&apikey=' + ALPHAVANTAGE_KEY
       axios.get(url).then((response) => {
-        for (let i in response.data['Time Series (15min)']) {
-          let a = response.data['Time Series (15min)'][i]
-          let obj = [i, Number(a['4. close'])]
+        let a = response.data['Time Series (Daily)']
+        Object.keys(a).forEach(element => {
+          let low = a[element]['3. low']
+          let open = a[element]['1. open']
+          let close = a[element]['4. close']
+          let high = a[element]['2. high']
+          let obj = [
+            String(element),
+            Number(low),
+            Number(open),
+            Number(close),
+            Number(high)
+          ]
           this.chartData.push(obj)
-        }
-        this.chartData.push(['Data', this.acao.Code])
+        })
+        console.log(this.chartData)
+        this.chartData.push(['Data', 'low', 'open', 'close', 'high'])
         this.chartData = this.chartData.reverse()
+        // this.chartData = this.chartData.reverse()
       },
       (error) => { alert(error) })
     },
@@ -93,8 +108,8 @@ export default {
   },
   created () {
     this.acao = this.$props.Acao
-    this.GetCotacao()
-    this.GetAtual()
+    // this.GetCotacao()
+    // this.GetAtual()
   }
 }
 </script>

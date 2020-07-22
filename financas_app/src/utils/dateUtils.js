@@ -14,3 +14,7 @@ export const getMonthString = (date) => {
   month[11] = 'Dezembro'
   return month[date.getMonth()]
 }
+
+export const getDateFromSeconds = (mileseconds) => {
+  return new Date(mileseconds * 1000)
+}

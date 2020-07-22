@@ -19,6 +19,7 @@
 
 <script>
 import { store } from '@/store/index.js'
+import firebase from 'firebase'
 export default {
   name: 'Vheader',
   props: {
@@ -40,7 +41,12 @@ export default {
       this.$router.push('dashboard')
     },
     goToSair () {
-      this.$router.push('/')
+      let that = this
+      firebase.auth().signOut().then(function () {
+        that.$router.push('/')
+      }).catch(function (e) {
+        console.log(e)
+      })
     }
   }
 }

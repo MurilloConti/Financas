@@ -1,3 +1,4 @@
+
 export const getMonthString = (date) => {
   var month = [12]
   month[0] = 'Janeiro'
@@ -17,4 +18,17 @@ export const getMonthString = (date) => {
 
 export const getDateFromSeconds = (mileseconds) => {
   return new Date(mileseconds * 1000)
+}
+
+export const stringfyDate = (date) => {
+  return date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear()
+}
+
+export const stringfyDateUTC = (date) => {
+  return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2)
+}
+
+export const convertDateStringToDate = (dateString) => {
+  let a = dateString.split('/')
+  return new Date(a[2] + '/' + a[1] + '/' + a[0])
 }

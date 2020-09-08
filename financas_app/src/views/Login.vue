@@ -1,47 +1,41 @@
 <template>
   <div class="login">
-    <div class="container-fluid" style="height:100vh ;">
-        <div class="row h-100">
-            <div class="col-md banner">
-            </div>
-            <div class="col-md h-100">
-                <div class="row h-100 align-items-center justify-content-center">
-                    <div class="col-6">
+    <b-container fluid style="height:100vh;">
+    <b-row class="h-100">
+            <b-col class="banner">
+            </b-col>
+            <b-col class="h-100">
+                <b-row class="h-100 align-items-center justify-content-center">
+                    <b-col cols="6">
                         <p>LOGIN</p>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">
-                                    <i class="fas fa-user"></i>
-                                </span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="Email" v-model="form.email">
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">
-                                    <i class="fas fa-unlock-alt"></i>
-                                </span>
-                            </div>
-                            <input type="password" class="form-control" placeholder="Senha" v-model="form.password">
-                        </div>
-                        <input type="button" class="btn btn-primary form-control botao" value="Entrar" v-on:click="submit ()">
-                        <div class="row">
-                            <div class="col-12">
-                                <a v-on:click="goToRegister()" class="pointer">Cadastrar</a>
-                            </div>
-                            </div>
-                        <div class="row" v-if="error">
-                            <div class="col-12 mt-4">
-                                <div class="alert alert-danger text-center" role="alert">
-                                  {{error}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                        <b-input-group class="mb-3">
+                          <template v-slot:prepend>
+                            <b-input-group-text ><i class="fas fa-user"></i></b-input-group-text>
+                          </template>
+                            <b-form-input v-model="form.email" placeholder="Email"></b-form-input>
+                        </b-input-group>
+                        <b-input-group class="mb-3">
+                           <template v-slot:prepend>
+                            <b-input-group-text ><i class="fas fa-unlock-alt"></i></b-input-group-text>
+                          </template>
+                            <b-form-input type="password" v-model="form.password" placeholder="Senha"></b-form-input>
+                        </b-input-group>
+                        <b-button block clas="botao" v-on:click="submit ()">Entrar</b-button>
+                        <b-row>
+                            <b-col>
+                              <b-button variant="Link" v-on:click="goToRegister()">Cadastrar</b-button>
+                            </b-col>
+                        </b-row>
+                        <b-row v-if="error">
+                          <b-col class="mt-4">
+                            <b-alert show variant="danger" fade dismissible class="text-center">{{error}}</b-alert>
+                          </b-col>
+                        </b-row>
+                    </b-col>
+                </b-row>
+            </b-col>
+      </b-row>
+    </b-container>
     <Wating :visible='false'></Wating>
   </div>
 </template>
@@ -49,7 +43,7 @@
 <script>
 import Wating from '@/components/Wating.vue'
 import firebase from 'firebase'
-import { store } from '@/store/index.js'
+
 export default {
   name: 'LogIn',
   components: {
@@ -70,12 +64,12 @@ export default {
         .auth()
         .signInWithEmailAndPassword(this.form.email, this.form.password)
         .then(user => {
-          store.dispatch('setCurrentUser', user.user.uid)
+          this.$store.dispatch('setCurrentUser', user.user.uid)
           const userInfo = {
             displayName: user.user.displayName,
             email: user.user.email
           }
-          store.dispatch('setUserProfile', userInfo)
+          this.$store.dispatch('setUserProfile', userInfo)
           this.$router.push('dashboard')
         })
         .catch(err => {
@@ -87,7 +81,7 @@ export default {
     }
   },
   created () {
-    if (store.state.currentUser) {
+    if (this.$store.state.User.currentUser) {
       this.$router.push('dashboard')
     }
   }
@@ -95,12 +89,12 @@ export default {
 </script>
 <style scoped>
  .banner {
-            background: url(https://www.netdente.com.br/images/banner_home_003.jpg) no-repeat right;
+            background: url('../assets/capas-posts-economia-9.jpg') no-repeat right;
             background-size: cover;
         }
 
   .botao {
-    background: #47848d !important;
+    background: #424242 !important;
   }
   .pointer {
     cursor: pointer;

@@ -1,10 +1,12 @@
 <template>
-  <div class="card cardCorpo">
-    <div class="card-header cardHeader">{{Title}}</div>
-    <div class="card-body" style="padding:0px; min-height: 235px">
-      <GChart type="PieChart" :data="chartData" :options="chartOptions" />
-    </div>
-  </div>
+  <b-card no-body tag="article" class="mb-2">
+    <b-card-header class="cardHeader">
+      {{Title}}
+    </b-card-header>
+    <b-card-body>
+        <GChart type="PieChart" :data="chartData" :options="chartOptions" />
+    </b-card-body>
+  </b-card>
 </template>
 
 <script>
@@ -28,9 +30,11 @@ export default {
   computed: {
     chartData () {
       let chartData = [['Fundo', 'Valor']]
-      this.$props.dados.forEach(element => {
-        chartData.push([element.Name, Number((element.Qtd * element.Price))])
-      })
+      if (this.$props.dados) {
+        this.$props.dados.forEach(element => {
+          chartData.push([element.Name, Number((element.Qtd * element.Price))])
+        })
+      }
       return chartData
     }
   }

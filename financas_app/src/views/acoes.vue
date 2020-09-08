@@ -1,44 +1,67 @@
 <template>
   <div class="acoes">
     <Vheader Title="Controle de Carteira"></Vheader>
-    <div class="">
-      <a class="fab" accesskey="f" data-toggle="modal" data-target="#modalAcoes" v-on:click="limpaBusca()">
-        <i class="fas fa-plus" style="font-size:17px; color:#ffffff;margin-top:15px"></i>
-        </a>
-    </div>
-    <div class="container-fluid">
-      <div class="row mt-3">
-        <div class="col-12 mt-2" v-for="(item,index) in acoesCarteira" v-bind:key="index">
-          <AreaChartCard :Title="item.Code"></AreaChartCard>
-        </div>
-      </div>
-    </div>
-    <div class="modal" tabindex="-1" role="dialog" id="modalAcoes">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header" style="background: #217346;">
-            <h6 class="modal-title" style="color:#ffffff">Adicionar nova ação a carteira</h6>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true" style="color:#ffffff">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="input-group mb-3" v-if="!editando">
-              <input
-              id="txtBuscaAcao"
-                type="text"
-                class="form-control"
-                placeholder="Buscar uma ação"
-                aria-label="Recipient's username"
-                aria-describedby="basic-addon2"
-                v-on:keyup="ativaEnter"
-              />
-              <div class="input-group-append">
-                <a class="btn btn-success" accesskey="13" v-on:click="GetAcao ()">
-                  <i class="fas fa-search" style="color:#ffffff"></i>
-                </a>
-              </div>
-            </div>
+    <b-container fluid>
+      <b-row>
+        <b-col>
+          <b-row>
+            <b-col cols="4">
+              <b-form-select v-model="activeStock">
+                <option disabled value="">Escolha um item</option>
+                <b-form-select-option :value="item" v-for="(item,index) in acoesCarteira" v-bind:key="index">{{item.Name}}</b-form-select-option>
+              </b-form-select>
+            </b-col>
+          </b-row>
+          <AcaoCard :Stock="activeStock" style="height:70vh"></AcaoCard>
+        </b-col>
+        <b-col cols="3" class="h-100">
+            <b-card no-body class="shadow" style="height:90vh !important">
+              <b-card-header class="text-center">
+                <p>Extrato</p>
+              </b-card-header>
+              <b-card-body>
+                <b-overlay :show="show" opacity="0.9" rounded="sm">
+                  <b-list-group>
+                    <b-list-group-item>
+                      <b-row>
+                        <b-col cols="2">
+                          <b-badge pill  variant="success"><i class="fas fa-shopping-cart"></i></b-badge>
+                        </b-col>
+                          <b-col>
+                            Compra de R$250.000
+                          </b-col>
+                      </b-row>
+                      </b-list-group-item>
+                    <b-list-group-item>
+                      <b-row>
+                        <b-col cols="2">
+                          <b-badge pill  variant="danger"><i class="fas fa-receipt"></i></b-badge>
+                        </b-col>
+                          <b-col>
+                            <h5 class="mb-1">R$250.000</h5>
+                          </b-col>
+                          <b-col cols="3">
+                            <small>25/10/2020</small>
+                          </b-col>
+                      </b-row>
+                    </b-list-group-item>
+                    <b-list-group-item>Morbi leo risus</b-list-group-item>
+                    <b-list-group-item>Porta ac consectetur ac</b-list-group-item>
+                    <b-list-group-item>Vestibulum at eros</b-list-group-item>
+                  </b-list-group>
+                </b-overlay>
+              </b-card-body>
+            </b-card>
+        </b-col>
+      </b-row>
+    </b-container>
+    <b-modal id="modalAcoes" size="lg" title="Adicionar nova ação a carteira">
+      <b-input-group class="mb-3" v-if="!editando">
+        <b-form-input id="txtBuscaAcao" type="text" placeholder="Buscar uma ação" v-on:keyup="ativaEnter" />
+          <b-input-group-append>
+              <b-button variant="success" accesskey="13" v-on:click="GetAcao ()"><i class="fas fa-search" style="color:#ffffff"></i></b-button>
+          </b-input-group-append>
+      </b-input-group>
             <div style="overflow-y:auto; height:50vh" v-if="!editando">
               <table class="table table-striped table-hover table-sm">
                 <thead>
@@ -76,19 +99,15 @@
               </div>
               </div>
             </div>
-          </div>
-          <div class="modal-footer" v-if="editando">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="preencheDadosAcao()">Salvar</button>
-          </div>
-        </div>
-      </div>
-    </div>
+        <b-button @click="preencheDadosAcao()">Salvar</b-button>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import Vheader from '@/components/Vheader.vue'
-import AreaChartCard from '../components/AreaChartCard'
+// import AreaChartCard from '../components/AreaChartCard'
+import AcaoCard from '../components/AcaoCard'
 import axios from 'axios'
 import { store } from '@/store/index.js'
 const fb = require('@/firebaseConfig.js')
@@ -96,12 +115,14 @@ export default {
   name: 'acoes',
   components: {
     Vheader,
-    AreaChartCard
+    // AreaChartCard
+    AcaoCard
   },
   data () {
     return {
       acoesBusca: [],
       acoesCarteira: [],
+      activeStock: null,
       editando: false,
       acaoEdicao: {}
     }
@@ -142,11 +163,13 @@ export default {
         this.acoesCarteira.push(acao)
         this.saveToFirebase(acao)
       } else {
-        this.acoesCarteira.forEach((element, index) => {
-          if (element.Code === acao.Code) {
-            this.acoesCarteira[index] = acao
-          }
-        })
+        if (this.acoesCarteira) {
+          this.acoesCarteira.forEach((element, index) => {
+            if (element.Code === acao.Code) {
+              this.acoesCarteira[index] = acao
+            }
+          })
+        }
       }
       store.commit('fetchAcoesCarteira', this.acoesCarteira)
     },
@@ -186,7 +209,7 @@ export default {
   font-family: "Exo", sans-serif;
 }
 .cardHeader {
-  background: #217346;
+  background: #424242;
   color: #ffffff;
   font-weight: bold;
 }
@@ -195,6 +218,7 @@ export default {
   color: #424242;
 }
 .fab{
+  z-index: 20;
   position: fixed;
   bottom:30px;
   right:35px;

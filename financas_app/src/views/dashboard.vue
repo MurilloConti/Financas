@@ -1,73 +1,75 @@
 <template>
   <div class="dashboard">
+    <div class="inner">
   <Vheader Title="Resumo Financeiro"></Vheader>
-      <div class="container">
-    <div class="row mt-3">
-      <div class="col">
-        <div class="card text-center cardCorpo">
-          <div class="card-header cardHeader">Patrimonio total</div>
-          <div class="card-body">
-            <p style="font-size: 22px" class="card-text">R$: {{ Number(Patrimonio).toFixed(2)}}</p>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card text-center cardCorpo">
-          <div
-            class="card-header cardHeader"
-          >Lucro acumulado</div>
-          <div class="card-body">
-            <p style="font-size: 22px" class="card-text">R$: {{ Number(Patrimonio - TotalAplicado).toFixed(2)}}</p>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card text-center cardCorpo">
-          <div
-            class="card-header cardHeader"
-          >Lucro percentual</div>
-          <div class="card-body">
-            <p style="font-size: 22px" class="card-text">{{LucroPercentual}} %</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-6">
+  <b-container>
+    <b-row class="mt-3">
+      <b-col>
+        <b-card no-body tag="article" class="mb-2">
+            <b-card-header class="cardHeader">
+              Patrimonio total
+            </b-card-header>
+              <b-card-body>
+                <b-card-text>
+                  <p style="font-size: 22px" class="card-text">R$: {{ Number(Patrimonio).toFixed(2)}}</p>
+                </b-card-text>
+              </b-card-body>
+          </b-card>
+      </b-col>
+      <b-col>
+        <b-card no-body tag="article" class="mb-2">
+            <b-card-header class="cardHeader">
+              Lucro acumulado
+            </b-card-header>
+            <b-card-body>
+              <b-card-text>
+                <p style="font-size: 22px" class="card-text">R$: {{ Number(Patrimonio - TotalAplicado).toFixed(2)}}</p>
+              </b-card-text>
+            </b-card-body>
+        </b-card>
+      </b-col>
+      <b-col>
+        <b-card no-body tag="article" class="mb-2">
+            <b-card-header class="cardHeader">
+              Lucro percentual
+            </b-card-header>
+            <b-card-body>
+              <b-card-text>
+                <p style="font-size: 22px" class="card-text">{{LucroPercentual}} %</p>
+              </b-card-text>
+            </b-card-body>
+        </b-card>
+      </b-col>
+    </b-row>
+    <b-row class="mt-3">
+      <b-col cols="6">
         <bargrafico Title="Evoluçao de patrimonio" :dados="this.evolPatrimonio"></bargrafico>
-      </div>
-      <div class="col">
+      </b-col>
+      <b-col cols="6">
         <pierafico Title="Distribuição de recursos" :dados="this.carteiraAcoes" ></pierafico>
-      </div>
+      </b-col>
+    </b-row>
+    <b-row class="mt-3">
+      <b-col>
+        <b-card no-body tag="article" class="mb-2">
+            <b-card-header class="cardHeader">
+              Ativos
+            </b-card-header>
+              <b-card-body>
+                <b-table striped hover small sticky-header="230px" :items="carteiraAcoes" :fields="tableFields">
+                  <template v-slot:cell(Code)="data">
+                    {{data.value.split('.')[0]}}
+                  </template>
+                  <template v-slot:cell(Valorização)="data">
+                    {{ calculateValPerc(data.item) }} %
+                  </template>
+                </b-table>
+              </b-card-body>
+          </b-card>
+      </b-col>
+    </b-row>
+  </b-container>
     </div>
-    <div class="row mt-3">
-      <div class="col">
-        <div class="card text-center cardCorpo">
-          <div class="card-header cardHeader">Ativos</div>
-          <div class="card-body">
-            <table class="table table-striped" style="font-size: 0.8rem">
-              <thead>
-                <tr>
-                  <th scope="col">Codigo</th>
-                  <th scope="col">Nome</th>
-                  <th scope="col">Valorização</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="acao in carteiraAcoes" :key="acao.Code">
-                  <td class="p-0">
-                    {{acao.Code.split('.')[0]}}
-                  </td>
-                  <td class="p-0">{{acao.Name}}</td>
-                  <td class="p-0">{{calculateValPerc(acao)}} %</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
   </div>
 </template>
 
@@ -76,7 +78,6 @@
 import bargrafico from '@/components/BarGrafico.vue'
 import pierafico from '@/components/PieChart.vue'
 import Vheader from '@/components/Vheader.vue'
-import { store } from '@/store/index.js'
 export default {
   name: 'dashboard',
   components: {
@@ -86,52 +87,53 @@ export default {
   },
   data () {
     return {
+      tableFields: ['Code', 'Name', 'Valorização']
     }
   },
   computed: {
     Patrimonio () {
       let Patrimonio = 0
-      store.state.carteiraAcoes.forEach(element => {
-        Patrimonio = Patrimonio + (element.Qtd * element.Price)
+      this.$store.state.Stocks.stocks.forEach(element => {
+        Patrimonio += (element.Qtd * element.Price)
       })
-      return Patrimonio
+      return isNaN(Patrimonio) ? Number(0).toFixed(2) : Patrimonio
     },
     TotalAplicado () {
       let totalAplicado = 0
-      store.state.carteiraAcoes.forEach(element => {
-        totalAplicado = totalAplicado + (element.Qtd * element.Cost)
+      this.$store.state.Stocks.stocks.forEach(element => {
+        totalAplicado += (element.Qtd * element.Cost)
       })
-      return totalAplicado
+      return isNaN(totalAplicado) ? Number(0).toFixed(2) : totalAplicado
     },
     LucroPercentual () {
       let GanhoPeriodo = 0
       GanhoPeriodo = Number((Number(this.Patrimonio - this.TotalAplicado) * 100) / this.Patrimonio).toFixed(2)
-      return GanhoPeriodo
+      return isNaN(GanhoPeriodo) ? Number(0).toFixed(2) : GanhoPeriodo
     },
     carteiraAcoes () {
-      return store.state.carteiraAcoes
+      return this.$store.state.Stocks.stocks
     },
     evolPatrimonio () {
-      return store.state.evolucaoPatrimonio
+      return this.$store.state.evolucaoPatrimonio
     }
   },
   methods: {
     calculateGain: function (acao) {
       if (acao) {
-        return Number((acao.Qtd * acao.Price) - (acao.Qtd * acao.Cost)).toFixed(2)
+        return isNaN(Number((acao.Qtd * acao.Price) - (acao.Qtd * acao.Cost))) ? Number(2).toFixed(2) : Number((acao.Qtd * acao.Price) - (acao.Qtd * acao.Cost)).toFixed(2)
       }
     },
     calculateValPerc: function (acao) {
       if (acao) {
         let totalAtual = acao.Qtd * acao.Price
-        return Number((this.calculateGain(acao) * 100) / totalAtual).toFixed(2)
+        return isNaN(Number((this.calculateGain(acao) * 100) / totalAtual)) ? Number(0).toFixed(2) : Number((this.calculateGain(acao) * 100) / totalAtual).toFixed(2)
       }
     }
   },
   beforeCreate () {
-    store.dispatch('fetchAcoesCarteira')
-    store.dispatch('fetchEvolPatrimonio')
-    store.dispatch('fetchCarteiras')
+    // this.$store.dispatch('fetchEvolPatrimonio')
+    // this.$store.dispatch('fetchWallets')
+    // this.$store.dispatch('fetchS')
   }
 }
 </script>
@@ -141,12 +143,11 @@ export default {
   font-family: "Exo", sans-serif;
 }
 .cardHeader {
-  background: #00796b;
+  background: #424242 !important;
   color: #ffffff;
   font-weight: bold;
 }
 .cardCorpo {
-  /* background: #424242; */
   color: #424242;
 }
 </style>

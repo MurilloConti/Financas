@@ -1,10 +1,12 @@
 <template>
-  <div class="card cardCorpo">
-    <div class="card-header cardHeader">{{Title}}</div>
-    <div class="card-body" style="padding:0px; min-height: 235px">
+  <b-card no-body tag="article" class="mb-2">
+    <b-card-header class="cardHeader">
+      {{Title}}
+    </b-card-header>
+    <b-card-body>
       <GChart type="ColumnChart" :data="chartData" :options="chartOptions" />
-    </div>
-  </div>
+    </b-card-body>
+  </b-card>
 </template>
 
 <script>
@@ -29,9 +31,11 @@ export default {
   computed: {
     chartData () {
       let chartData = [['Mes', 'Valor']]
-      this.$props.dados.forEach(element => {
-        chartData.push([element.mes, Number(element.total)])
-      })
+      if (this.$props.dados) {
+        this.$props.dados.forEach(element => {
+          chartData.push([element.mes, Number(element.total)])
+        })
+      }
       return chartData
     }
   }
